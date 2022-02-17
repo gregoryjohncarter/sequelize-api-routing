@@ -8,13 +8,13 @@ router.get('/', (req, res) => {
   Product.findAll({include: [
     {
       model: Category,
-      attributes: ['category_name']
+      attributes: ['id', 'category_name']
     },
     {
       model: Tag,
-      attributes: ['tag_name'],
+      attributes: ['id', 'tag_name'],
       through: ProductTag,
-      as: ['tag_name']
+      as: 'products'
     }]})
     .then(productData => res.json(productData))
     .catch(err => {
@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 
 // get one product
 router.get('/:id', (req, res) => {
-  User.findOne({
+  Product.findOne({
     where: {
       id: req.params.id
     },
@@ -36,9 +36,9 @@ router.get('/:id', (req, res) => {
       },
       {
         model: Tag,
-        attributes: ['tag_name'],
+        attributes: ['id', 'tag_name'],
         through: ProductTag,
-        as: ['tag_name']
+        as: 'products'
       }]})
       .then(productData => {
         if (!productData) {
